@@ -2,10 +2,12 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Movie_manager.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +27,13 @@ namespace Movie_manager
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddDbContext<MoviesDbContext>(option => 
+                option.UseSqlServer(Configuration.GetConnectionString("MyConnection")));
+
             services.AddControllers();
+
+            services.AddSwaggerGen();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,6 +50,8 @@ namespace Movie_manager
 
             app.UseAuthorization();
 
+            app.UseSwagger();
+            app.UseSwaggerUI();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
