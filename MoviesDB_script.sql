@@ -1,2 +1,0 @@
-create database MovieAdministrator
-use MovieAdministrator
