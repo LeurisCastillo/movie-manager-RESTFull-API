@@ -6,23 +6,20 @@ using System.Threading.Tasks;
 
 namespace Movie_manager.Models
 {
-    public class Movie
+    public class Account
     {
-        [Key]
         [Required]
+        [Key]
         public int Id { get; set; }
 
         [Required]
-        public string Tittle { get; set; }
+        public string Username { get; set; }
 
         [Required]
-        public int YearPublication { get; set; }
+        [EmailAddress]
+        public string Email { get; set; }
 
         [Required]
-        public float Rating { get; set; }
-
-        public int ActorId { get; set; }
-        public Actor actor { get; set; }
-
+        public string Password { get; set; }
     }
 }

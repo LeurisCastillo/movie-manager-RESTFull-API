@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Movie_manager.Data;
@@ -21,6 +22,7 @@ namespace Movie_manager.Controllers
             this.db = db;
         }
 
+        //[Authorize]
         [HttpGet]
         public ActionResult GetMovies()
         {
@@ -29,6 +31,7 @@ namespace Movie_manager.Controllers
             return Ok(list);
         }
 
+        //[Authorize]
         [HttpPost]
         public ActionResult PostMovies([FromBody] Movie movie)
         {
@@ -47,6 +50,7 @@ namespace Movie_manager.Controllers
             return Ok();
         }
 
+        //[Authorize]
         [HttpDelete]
         public ActionResult DeleteMovie(int id)
         {
@@ -63,6 +67,7 @@ namespace Movie_manager.Controllers
             return Ok();
         }
 
+        //[Authorize]
         [HttpPut]
         public ActionResult ModifyMovie(int id, Movie movie)
         {
@@ -83,7 +88,7 @@ namespace Movie_manager.Controllers
                 db.SaveChanges();
             }
 
-            return Ok();
+                return Ok();
         }
     }
 }
