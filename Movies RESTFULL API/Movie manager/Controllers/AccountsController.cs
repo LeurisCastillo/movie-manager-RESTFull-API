@@ -11,72 +11,73 @@ namespace Movie_manager.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ActorsController : ControllerBase
+    public class AccountsController : ControllerBase
     {
         private readonly MoviesDbContext db;
 
-        public ActorsController(MoviesDbContext db)
+        public AccountsController(MoviesDbContext db)
         {
             this.db = db;
         }
 
         [HttpGet]
-        public ActionResult GetActors()
+        public ActionResult GetAccount()
         {
-            var list = db.Actors.OrderBy(a => a.Name).ToList();
+            var list = db.Accounts.OrderBy(ac => ac.Username).ToString();
 
             return Ok(list);
         }
 
         [HttpPost]
-        public ActionResult PostActors([FromBody] Actor actor)
+        public ActionResult PostAccount([FromBody] Account account)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            if (actor == null)
+            if (account == null)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Add(actor);
+            db.Add(account);
             db.SaveChanges();
 
             return Ok();
         }
 
         [HttpDelete]
-        public ActionResult DeleteActor(int id)
+        public ActionResult DeleteAccount(int id)
         {
-            var actor = db.Actors.First(a => a.Id == id);
+            var account = db.Accounts.First(ac => ac.Id == id);
 
-            if(actor == null)
+            if (account == null)
             {
                 return NotFound();
             }
 
-            db.Remove(actor);
+            db.Remove(account);
             db.SaveChanges();
 
             return Ok();
         }
 
         [HttpPut]
-        public ActionResult ModifyActor(int id, Actor actor)
+        public ActionResult ModifyAccount(int id, Account account)
         {
-            if(id != actor.Id)
+
+            if (id != account.Id)
             {
                 return NotFound();
             }
 
-            var modifiedActor = db.Actors.First(a => a.Id == actor.Id);
+            var modifiedAccount = db.Accounts.First(ac => ac.Id == account.Id);
 
-            if (modifiedActor != null)
+            if (modifiedAccount != null)
             {
-                modifiedActor.Name = actor.Name;
-                modifiedActor.Popularity = actor.Popularity;
-                modifiedActor.Movies = actor.Movies;
+                modifiedAccount.Username = account.Username;
+                modifiedAccount.Email = account.Email;
+                modifiedAccount.Password = account.Password;
 
                 db.SaveChanges();
             }
