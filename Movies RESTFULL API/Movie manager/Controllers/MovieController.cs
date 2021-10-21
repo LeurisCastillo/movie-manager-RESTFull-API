@@ -22,11 +22,12 @@ namespace Movie_manager.Controllers
             this.db = db;
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet]
         public ActionResult GetMovies()
         {
-            var list = db.Movie.OrderBy(m => m.Tittle).ToList();
+            //var list = db.Movie.OrderBy(m => m.Tittle).ToList();
+            var list = db.Movies.Include(m => m.Actors_Movies).ThenInclude(m => m.Actor).ToList();
 
             return Ok(list);
         }
@@ -54,7 +55,7 @@ namespace Movie_manager.Controllers
         [HttpDelete]
         public ActionResult DeleteMovie(int id)
         {
-            var movie = db.Movie.First(m => m.Id == id);
+            var movie = db.Movies.First(m => m.Id == id);
 
             if (movie == null)
             {
@@ -77,7 +78,7 @@ namespace Movie_manager.Controllers
                 return NotFound();
             }
 
-            var modifiedMovie = db.Movie.First(m => m.Id == movie.Id);
+            var modifiedMovie = db.Movies.First(m => m.Id == movie.Id);
 
             if(modifiedMovie != null)
             {

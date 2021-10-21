@@ -18,6 +18,6 @@ namespace Movie_manager.Models
         [Required]
         public float Popularity { get; set; }
 
-        public ICollection<Movie> Movies { get; set; }
+        public List<Actors_Movies> Actors_Movies { get; set; }
     }
 }

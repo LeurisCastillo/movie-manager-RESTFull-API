@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Movie_manager.Data;
 using Movie_manager.Models;
 using System;
@@ -13,6 +14,7 @@ namespace Movie_manager.Controllers
     [ApiController]
     public class ActorsController : ControllerBase
     {
+       // Init 
         private readonly MoviesDbContext db;
 
         public ActorsController(MoviesDbContext db)
@@ -23,7 +25,7 @@ namespace Movie_manager.Controllers
         [HttpGet]
         public ActionResult GetActors()
         {
-            var list = db.Actors.OrderBy(a => a.Name).ToList();
+            var list = db.Actors.Include(m => m.Actors_Movies).ThenInclude(m => m.Movie).ToList();
 
             return Ok(list);
         }
@@ -76,7 +78,7 @@ namespace Movie_manager.Controllers
             {
                 modifiedActor.Name = actor.Name;
                 modifiedActor.Popularity = actor.Popularity;
-                modifiedActor.Movies = actor.Movies;
+                //modifiedActor.Movies = actor.Movies;
 
                 db.SaveChanges();
             }

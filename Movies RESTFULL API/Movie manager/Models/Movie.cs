@@ -21,8 +21,7 @@ namespace Movie_manager.Models
         [Required]
         public float Rating { get; set; }
 
-        public int ActorId { get; set; }
-        public Actor actor { get; set; }
+        public List<Actors_Movies> Actors_Movies { get; set; }
 
     }
 }
