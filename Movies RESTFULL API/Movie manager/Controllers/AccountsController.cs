@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Movie_manager.Data;
 using Movie_manager.Models;
@@ -20,10 +21,11 @@ namespace Movie_manager.Controllers
             this.db = db;
         }
 
+        [Authorize]
         [HttpGet]
         public ActionResult GetAccount()
         {
-            var list = db.Accounts.OrderBy(ac => ac.Username).ToString();
+            var list = db.Accounts.OrderBy(ac => ac.Username).ToList();
 
             return Ok(list);
         }
@@ -46,6 +48,7 @@ namespace Movie_manager.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpDelete]
         public ActionResult DeleteAccount(int id)
         {
@@ -62,6 +65,7 @@ namespace Movie_manager.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpPut]
         public ActionResult ModifyAccount(int id, Account account)
         {

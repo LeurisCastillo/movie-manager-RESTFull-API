@@ -26,13 +26,11 @@ namespace Movie_manager.Controllers
         [HttpGet]
         public ActionResult GetMovies()
         {
-            //var list = db.Movie.OrderBy(m => m.Tittle).ToList();
-            var list = db.Movies.Include(m => m.Actors_Movies).ThenInclude(m => m.Actor).ToList();
-
+            var list = db.Movies.OrderBy(m => m.Tittle).ToList();
             return Ok(list);
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPost]
         public ActionResult PostMovies([FromBody] Movie movie)
         {
@@ -51,7 +49,7 @@ namespace Movie_manager.Controllers
             return Ok();
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpDelete]
         public ActionResult DeleteMovie(int id)
         {
@@ -68,7 +66,7 @@ namespace Movie_manager.Controllers
             return Ok();
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPut]
         public ActionResult ModifyMovie(int id, Movie movie)
         {

@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Movie_manager.Data;
 
 namespace Movie_manager.Migrations
 {
     [DbContext(typeof(MoviesDbContext))]
-    partial class MoviesDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211025235926_relationship_many_to_many_modified")]
+    partial class relationship_many_to_many_modified
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,6 +63,21 @@ namespace Movie_manager.Migrations
                     b.ToTable("Actors");
                 });
 
+            modelBuilder.Entity("Movie_manager.Models.Actors_Movies", b =>
+                {
+                    b.Property<int>("ActorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MovieId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ActorId", "MovieId");
+
+                    b.HasIndex("MovieId");
+
+                    b.ToTable("Actors_Movies");
+                });
+
             modelBuilder.Entity("Movie_manager.Models.Movie", b =>
                 {
                     b.Property<int>("Id")
@@ -81,6 +98,35 @@ namespace Movie_manager.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Movies");
+                });
+
+            modelBuilder.Entity("Movie_manager.Models.Actors_Movies", b =>
+                {
+                    b.HasOne("Movie_manager.Models.Actor", "Actor")
+                        .WithMany("Actors_Movies")
+                        .HasForeignKey("ActorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Movie_manager.Models.Movie", "Movie")
+                        .WithMany("Actors_Movies")
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Actor");
+
+                    b.Navigation("Movie");
+                });
+
+            modelBuilder.Entity("Movie_manager.Models.Actor", b =>
+                {
+                    b.Navigation("Actors_Movies");
+                });
+
+            modelBuilder.Entity("Movie_manager.Models.Movie", b =>
+                {
+                    b.Navigation("Actors_Movies");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Movie_manager.Data;
@@ -22,14 +23,16 @@ namespace Movie_manager.Controllers
             this.db = db;
         }
 
+        [Authorize]
         [HttpGet]
         public ActionResult GetActors()
         {
-            var list = db.Actors.Include(m => m.Actors_Movies).ThenInclude(m => m.Movie).ToList();
+            var list = db.Actors.OrderBy(ac => ac.Name).ToList();
 
             return Ok(list);
         }
 
+        [Authorize]
         [HttpPost]
         public ActionResult PostActors([FromBody] Actor actor)
         {
@@ -48,6 +51,7 @@ namespace Movie_manager.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpDelete]
         public ActionResult DeleteActor(int id)
         {
@@ -64,6 +68,7 @@ namespace Movie_manager.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpPut]
         public ActionResult ModifyActor(int id, Actor actor)
         {
@@ -78,7 +83,6 @@ namespace Movie_manager.Controllers
             {
                 modifiedActor.Name = actor.Name;
                 modifiedActor.Popularity = actor.Popularity;
-                //modifiedActor.Movies = actor.Movies;
 
                 db.SaveChanges();
             }
